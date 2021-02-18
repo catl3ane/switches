@@ -1,0 +1,184 @@
+dba-profile profile-id 1 profile-name 1
+  type4 max 998000
+  commit
+ exit
+!
+ont-lineprofile epon profile-id 0 profile-name lineprofile_0
+  dba-threshold 1 q1 0
+  llid 1 dba-profile-id 0
+  commit
+ exit
+!
+ont-lineprofile epon profile-id 1 profile-name 1
+  dba-threshold 1 q1 0
+  llid 1 dba-profile-id 1
+  commit
+ exit
+!
+ont-lineprofile epon profile-id 24 profile-name 24
+  dba-threshold 1 q1 0
+  llid 1 dba-profile-id 0
+  commit                         
+ exit
+!
+ont-srvprofile epon profile-id 1 profile-name 1
+  ont-port eth adaptive pots 0 catv 0
+  commit
+ exit
+!
+ont-srvprofile epon profile-id 24 profile-name 24
+  ont-port eth adaptive pots 0 catv 0
+  commit
+ exit
+!
+interface epon 0/0
+  ont authmode 1 adaptive
+  anti-rogueont auto-detect 1 on
+  ont authmode 2 adaptive
+  anti-rogueont auto-detect 2 on
+  ont authmode 3 adaptive
+  anti-rogueont auto-detect 3 on
+  ont authmode 4 adaptive
+  anti-rogueont auto-detect 4 on
+  ont authmode 5 adaptive
+  anti-rogueont auto-detect 5 on
+  ont authmode 6 adaptive        
+  anti-rogueont auto-detect 6 on
+  ont authmode 7 adaptive
+  anti-rogueont auto-detect 7 on
+  ont authmode 8 adaptive
+  anti-rogueont auto-detect 8 on
+ exit
+!
+vlan 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+mac-address timer 100
+loopback-detection enable
+loopback-detection interval-time 60
+!
+interface ge 0/0
+ port-name 1 uplink
+ vlan mode 1 trunk
+ vlan trunk 1 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ port-name 2 backup
+ vlan mode 2 trunk
+ vlan trunk 2 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan mode 3 trunk
+ vlan trunk 3 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan mode 4 trunk
+ vlan trunk 4 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ port-name 5 pingalka
+ vlan access 5 808
+ vlan mode 6 trunk
+ vlan trunk 6 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan mode 7 trunk
+ vlan trunk 7 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan mode 8 trunk
+ vlan trunk 8 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ exit
+!
+interface xge 0/0
+ vlan mode 1 trunk
+ vlan trunk 1 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan mode 2 trunk
+ vlan trunk 2 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ exit
+!
+interface epon 0/0
+ vlan mode 1 hybrid
+ vlan hybrid 1 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 1 cvlan-range 3101 3164 2051
+ loopback-detection 1 enable
+ vlan mode 2 hybrid
+ vlan hybrid 2 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 2 cvlan-range 3201 3264 2051
+ loopback-detection 2 enable
+ vlan mode 3 hybrid
+ vlan hybrid 3 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 3 cvlan-range 3301 3364 2051
+ loopback-detection 3 enable
+ vlan mode 4 hybrid
+ vlan hybrid 4 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 4 cvlan-range 3401 3499 2051
+ loopback-detection 4 enable
+ vlan mode 5 hybrid
+ vlan hybrid 5 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 5 cvlan-range 3501 3564 2051
+ loopback-detection 5 enable
+ vlan mode 6 hybrid
+ vlan hybrid 6 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 6 cvlan-range 3601 3664 2051
+ loopback-detection 6 enable
+ vlan mode 7 hybrid
+ vlan hybrid 7 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 7 cvlan-range 3701 3764 2051
+ loopback-detection 7 enable
+ vlan mode 8 hybrid
+ vlan hybrid 8 tagged 9,19,808,3039,2051,20,24,50,353,546,820,830,2901-2902
+ vlan qinq 8 cvlan-range 3801 3864 2051
+ loopback-detection 8 enable
+ exit
+!                                
+btv
+ exit
+!
+timezone gmt+ 02:00
+!
+interface vlanif 808
+ ip address 10.30.10.228 255.255.255.0
+ exit
+!
+ntp-service unicast-service 10.30.0.254
+ip route 0.0.0.0/0 10.30.10.1
+loghost add 10.30.0.254 olt.log
+loghost activate name olt.log
+alarm output alarmid 101 enable
+alarm output alarmid 102 enable
+alarm output alarmid 104 enable
+alarm output alarmid 105 enable
+alarm output alarmid 107 enable
+alarm output alarmid 201 enable
+alarm output alarmid 202 enable
+alarm output alarmid 203 enable
+alarm output alarmid 204 enable
+alarm output alarmid 205 enable
+alarm output alarmid 206 enable  
+alarm output alarmid 301 enable
+alarm output alarmid 302 enable
+alarm output alarmid 303 enable
+alarm output alarmid 304 enable
+alarm output alarmid 305 enable
+alarm output alarmid 306 enable
+alarm output alarmid 307 enable
+alarm output alarmid 308 enable
+alarm output alarmid 310 enable
+alarm output alarmid 311 enable
+alarm output alarmid 312 enable
+alarm output alarmid 313 enable
+alarm output alarmid 314 enable
+alarm output alarmid 315 enable
+alarm output alarmid 316 enable
+alarm output alarmid 317 enable
+alarm output alarmid 318 enable
+alarm output alarmid 319 enable
+alarm output alarmid 320 enable
+alarm output alarmid 321 enable
+alarm output alarmid 401 enable
+alarm output alarmid 402 enable
+alarm output alarmid 403 enable
+alarm output alarmid 131082 enable
+alarm output alarmid 131083 enable
+alarm output alarmid 131084 enable
+alarm output alarmid 131085 enable
+event output eventid 10001 enable
+event output eventid 13001 enable
+event output eventid 13002 enable
+sysname "OLT43_10.228"
+autosave interval on
+autosave interval configuration 300
+snmp-agent community read "puhcfl"
+snmp-agent community write "pxfydqe"
+snmp-agent community read "public"
+snmp-agent community write "private"
+snmp-agent enable
+!
+end
